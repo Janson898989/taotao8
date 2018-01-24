@@ -22,7 +22,7 @@ Date.prototype.format = function(format){
 var TT = TAOTAO = {
 	// 编辑器参数
 	kingEditorParams : {
-		//指定上传文件参数名称
+		//指定上传文件参数名称  <input type="file" name="uploadFile">
 		filePostName  : "uploadFile",
 		//指定上传文件请求的url。
 		uploadJson : '/pic/upload',
@@ -64,25 +64,35 @@ var TT = TAOTAO = {
     },
     // 初始化图片上传组件
     initPicUpload : function(data){
+        //循环
     	$(".picFileUpload").each(function(i,e){
+    	    //把元素转成jquery对象
     		var _ele = $(e);
+    		//获取到<a标签的元素的兄弟节点 <div class=".pic"></div> 删除元素
     		_ele.siblings("div.pics").remove();
+    		//追加一个元素
     		_ele.after('<div class="pics"><ul></ul></div>');
     		
-        	//给“上传图片按钮”绑定click事件
+        	//给“上传图片按钮”绑定click事件 触发
         	$(e).click(function(){
+        	    //找到form表单   效果等同于$("#itemAddForm")
         		var form = $(this).parentsUntil("form").parent("form");
-        		//打开图片上传窗口
+        		//打开图片上传窗口 kindEditor的对象  创建一个多图片上传的组件
         		KindEditor.editor(TT.kingEditorParams).loadPlugin('multiimage',function(){
         			var editor = this;
         			editor.plugin.multiImageDialog({
-						clickFn : function(urlList) {
-							var imgArray = [];
+                        //点击全部插入的时候 触发的事件
+						clickFn : function(urlList) {//urllist是路径的数组
+							var imgArray = [];//定义一个数组
 							KindEditor.each(urlList, function(i, data) {
-								imgArray.push(data.url);
+							    //data是一个JSON对象
+								imgArray.push(data.url);//添加数据到数组中
 								// 回显图片
+                            //获取到<div class="pics"><ul></ul></div> 在ul下拼接li
 								form.find(".pics ul").append("<li><a href='"+data.url+"' target='_blank'><img src='"+data.url+"' width='80' height='50' /></a></li>");
 							});
+							//循环成功之后：<div clas="pics"><ul><li></li><li></li></ul></div>
+                            //获取表单中名字是image的隐藏域  并设置值为 imgArray.join(",")：将数组的元素通过 “，”进行连接拼接成一个字符串
 							form.find("[name=image]").val(imgArray.join(","));
 							editor.hideDialog();
 						}
@@ -94,16 +104,22 @@ var TT = TAOTAO = {
     
     // 初始化选择类目组件
     initItemCat : function(data){
+    	//此方法在页面初始化的时候被调用了
+    	//类选择器获取到点击的按钮
     	$(".selectItemCat").each(function(i,e){
+    		//将元素转为jquery的对象
     		var _ele = $(e);
     		if(data && data.cid){
     			_ele.after("<span style='margin-left:10px;'>"+data.cid+"</span>");
     		}else{
+    			//在元素的后边追加标签<span style='margin-left:10px;'></span>
     			_ele.after("<span style='margin-left:10px;'></span>");
     		}
+    		//解绑再绑定事件  当按钮被点击的时候 触发以下的业务逻辑
     		_ele.unbind('click').click(function(){
-    			//创建一个div标签
+    			//$("<div>")创建一个div标签，添加CSS的样式 之后在<div>标签里面创建<ul>----><div><ul></ul></div>                     $("div"):获取
     			$("<div>").css({padding:"5px"}).html("<ul>")
+				//打开一个窗口
     			.window({
     				width:'500',
     			    height:"450",
@@ -111,19 +127,34 @@ var TT = TAOTAO = {
     			    closed:true,
     			    iconCls:'icon-save',
     			    title:'选择类目',
+
+					//当窗口被打开的时候触发以下的业务逻辑
     			    onOpen : function(){
+    					//构建树的控件
+
+
+						//获取窗口本身
     			    	var _win = this;
+    			    	//获取当前的窗口的ul的标签里面创建一棵树
     			    	$("ul",_win).tree({
-    			    		url:'/item/cat/list',
+							//异步请求的数据的URL
+    			    		url:'/item/cat/list',//?id=111
     			    		animate:true,
+							//当点击树的节点的时候触发
+							//node:就是被点击的节点对象
     			    		onClick : function(node){
+    			    			//extjs
+								//判断被点击的节点是否是一个叶子节点  如果是就执行以下的业务逻辑
     			    			if($(this).tree("isLeaf",node.target)){
     			    				// 填写到cid中
+									//获取隐藏域 赋值为被点击节点的ID的值
     			    				_ele.parent().find("[name=cid]").val(node.id);
-    			    				// 将文本值显示，并设置标签(上边追加的<span)的cid属性为节点的id
+    			    				//获取到的就是刚才添加的标签<span>男表 </span> 在标签的中间添加文本
+                                   // <span  cid="291">男表 </span>
     			    				_ele.next().text(node.text).attr("cid",node.id);
-    			    				
+									//关闭窗口
     			    				$(_win).window('close');
+
     			    				if(data && data.fun){
     			    					alert(data);
     			    					data.fun.call(this,node);
@@ -132,7 +163,9 @@ var TT = TAOTAO = {
     			    		}
     			    	});
     			    },
+					//当关闭窗口的时候
     			    onClose : function(){
+    			    	//吧当前的窗口销毁。
     			    	$(this).window("destroy");
     			    }
     			}).window('open');
