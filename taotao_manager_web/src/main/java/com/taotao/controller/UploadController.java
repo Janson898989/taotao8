@@ -1,5 +1,7 @@
 package com.taotao.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.taotao.common.util.JsonUtils;
 import com.taotao.util.FastDFSClient;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
@@ -23,7 +25,7 @@ public class UploadController {
     //参数：multipartfile
     @RequestMapping(value="/pic/upload",produces = MediaType.TEXT_PLAIN_VALUE+";charset=utf-8")
     @ResponseBody
-    public Map<String, Object> upload(MultipartFile uploadFile) {
+    public String upload(MultipartFile uploadFile) {
         //1上传文件处理 1，加入file-upload.jar 2.配置文件解析器
 
         // 2调用fastdfs提供的客户端 把流写入到对应的storage中
@@ -50,7 +52,8 @@ public class UploadController {
             Map<String, Object> map = new HashMap<>();
             map.put("error", 0);
             map.put("url", complPath);
-            return map;
+            //转成json格式的字符串
+            return JsonUtils.objectToJson(map);
 
         } catch (Exception e) {
             //失败时
@@ -63,7 +66,7 @@ public class UploadController {
             Map<String, Object> map = new HashMap<>();
             map.put("error", 1);
             map.put("message", "上传失败");
-            return map;
+            return JsonUtils.objectToJson(map);
         }
     }
 }
