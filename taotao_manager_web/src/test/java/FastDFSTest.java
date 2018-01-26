@@ -42,4 +42,15 @@ public class FastDFSTest {
         String filepath = client.uploadFile("C:\\Users\\Public\\Pictures\\Sample Pictures\\Koala.jpg", "jpg");
         System.out.println(filepath);
     }
+
+    public static void main(String[] args) {
+        float a = 130f;//130f  分
+        double b = 130d;//130d 分
+
+        float aa = a * 3;
+        double bb = b * 3;
+        System.out.println(aa);
+        System.out.println(bb);
+
+    }
 }

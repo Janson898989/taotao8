@@ -1,6 +1,8 @@
 package com.taotao.controller;
 
 import com.taotao.common.pojo.EasyUIDataGridResult;
+import com.taotao.common.pojo.TaotaoResult;
+import com.taotao.pojo.TbItem;
 import com.taotao.service.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -28,5 +30,18 @@ public class ItemController {
         //3.调用服务
         EasyUIDataGridResult result = itemService.getItemList(page, rows);
         return result;
+    }
+
+    //插入商品数据包括（商品的基本信息和描述信息）
+    //url:/item/save
+    //参数：表单
+    //返回值：json  taotaoresult
+    @RequestMapping(value="/item/save",method = RequestMethod.POST)
+    @ResponseBody
+    public TaotaoResult saveItem(String desc, TbItem tbItem){
+        //引入服务
+        //注入服务
+        //调用服务
+        return itemService.saveItem(tbItem,desc);
     }
 }

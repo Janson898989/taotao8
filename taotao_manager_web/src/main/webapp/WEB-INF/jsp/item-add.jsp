@@ -51,10 +51,7 @@
 	            </td>
 	        </tr>
 	        <tr class="params hide">
-	        	<td>商品规格:</td>
-	        	<td>
-	        		
-	        	</td>
+
 	        </tr>
 	    </table>
 	    <input type="hidden" name="itemParams"/>
@@ -84,8 +81,9 @@
 			return ;
 		}
 		//取商品价格，单位为“分”
+		//获取隐藏域对象赋值  成单位为分的数据
 		$("#itemAddForm [name=price]").val(eval($("#itemAddForm [name=priceView]").val()) * 100);
-		//同步文本框中的商品描述
+		//同步文本框中的商品描述  富文本编辑器中的内容是包括标签的，值放置到textarea
 		itemAddEditor.sync();
 		//取商品的规格
 		/*
