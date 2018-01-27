@@ -6,6 +6,7 @@
             </ul>
         </div>
         <div data-options="region:'center'" style="padding:5px">
+			<%--queryParams:{categoryId:0}   额外的传递参数值 参数名就是categoryId 值：0--%>
             <table class="easyui-datagrid" id="contentList" data-options="toolbar:contentListToolbar,singleSelect:false,collapsible:true,pagination:true,method:'get',pageSize:20,url:'/content/query/list',queryParams:{categoryId:0}">
 		    <thead>
 		        <tr>
@@ -25,13 +26,21 @@
     </div>
 </div>
 <script type="text/javascript">
+	//文档加载的时候执行
 $(function(){
 	var tree = $("#contentCategoryTree");
+	//获取表格
 	var datagrid = $("#contentList");
+	//创建一棵树
 	tree.tree({
+		//url:'/content/category/list
+		//点击节点触发
 		onClick : function(node){
+		    //判断如果是叶子节点 就执行业务逻辑
 			if(tree.tree("isLeaf",node.target)){
+			    //重新发送URL去数据库加载数据
 				datagrid.datagrid('reload', {
+				    //在加载数据的时候 传递参数  参数的名字就是categoryId  值就是：被点击的节点的Id 叶子类型的内容分类的id  如果有重复名就会覆盖原来的值
 					categoryId :node.id
 		        });
 			}
@@ -41,13 +50,20 @@ $(function(){
 var contentListToolbar = [{
     text:'新增',
     iconCls:'icon-add',
+	//点击选择项的时候触发
     handler:function(){
+        //获取被选中的节点对象
     	var node = $("#contentCategoryTree").tree("getSelected");
+    	//if(node)--->如果这个节点存在就执行
+		//$("#contentCategoryTree").tree("isLeaf",node.target) 获取到的节点是不是叶子节点
+		//如果节点不存在 或者选中的不是叶子节点就触发
     	if(!node || !$("#contentCategoryTree").tree("isLeaf",node.target)){
     		$.messager.alert('提示','新增内容必须选择一个内容分类!');
     		return ;
     	}
+    	//创建一个窗口
     	TT.createWindow({
+			//url的选项表示：重新发送请求是/content-add请求 将返回的数据加载出来到窗口里面
 			url : "/content-add"
 		}); 
     }

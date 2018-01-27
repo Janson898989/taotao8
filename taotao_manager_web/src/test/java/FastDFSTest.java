@@ -1,6 +1,10 @@
 import com.taotao.util.FastDFSClient;
+import org.apache.commons.io.FileUtils;
 import org.csource.fastdfs.*;
 import org.junit.Test;
+import sun.reflect.generics.tree.ByteSignature;
+
+import java.io.File;
 
 public class FastDFSTest {
 
@@ -11,7 +15,7 @@ public class FastDFSTest {
         //1.创建一个配置文件 用来连接tracker_server
 
         //2.加载配置文件
-        ClientGlobal.init("C:\\Users\\ThinkPad\\IdeaProjects\\taotao_parent\\taotao_manager_web\\src\\main\\resources\\resource\\fastdfs.conf");
+        ClientGlobal.init("C:\\Users\\ThinkPad\\IdeaProjects\\taotao_parent\\taotao_manager_web\\src\\main\\resources\\resource\\fast.properties");
 
         //3.构建trackerclient对象
         TrackerClient trackerClient = new TrackerClient();
@@ -34,11 +38,28 @@ public class FastDFSTest {
         for (String string : strings) {
             System.out.println(string);
         }
+
+
+
+
+        //
+        byte[] bytes = storageClient.download_file(strings[0], strings[1]);
+
+
+        System.out.println(bytes);
+        FileUtils.writeByteArrayToFile(new File("E:\\temp\\1231312234.jpg"),bytes);
+
+
+        int i = storageClient.delete_file(strings[0],"asfdafaf");
+
+        System.out.println("成功与否"+i);
+
+
     }
 
     @Test
     public void testFastDfsClient() throws  Exception{
-        FastDFSClient client = new FastDFSClient("C:\\Users\\ThinkPad\\IdeaProjects\\taotao_parent\\taotao_manager_web\\src\\main\\resources\\resource\\fastdfs.conf");
+        FastDFSClient client = new FastDFSClient("C:\\Users\\ThinkPad\\IdeaProjects\\taotao_parent\\taotao_manager_web\\src\\main\\resources\\resource\\fast.properties");
         String filepath = client.uploadFile("C:\\Users\\Public\\Pictures\\Sample Pictures\\Koala.jpg", "jpg");
         System.out.println(filepath);
     }

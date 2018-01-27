@@ -52,9 +52,11 @@
 </div>
 <script type="text/javascript">
 	var contentAddEditor ;
+	//文档被加载的时候
 	$(function(){
 		contentAddEditor = TT.createEditor("#contentAddForm [name=content]");
 		TT.initOnePicUpload();
+		//"#contentCategoryTree").tree("getSelected").id  获取被选中的树的节点对象id值赋值给隐藏域
 		$("#contentAddForm [name=categoryId]").val($("#contentCategoryTree").tree("getSelected").id);
 	});
 	
@@ -64,15 +66,17 @@
 					$.messager.alert('提示','表单还未填写完成!');
 					return ;
 				}
+				//同步富文本内容到textarea里面
 				contentAddEditor.sync();
-				
-				$.post("/content/save",$("#contentAddForm").serialize(), function(data){
-					if(data.status == 200){
-						$.messager.alert('提示','新增内容成功!');
-    					$("#contentList").datagrid("reload");
-    					TT.closeCurrentWindow();
-					}
-				});
+
+                $.post("/content/save",$("#contentAddForm").serialize(), function(data){
+                    if(data.status == 200){
+                        $.messager.alert('提示','新增内容成功!');
+                        //重新加载表格数据
+                        $("#contentList").datagrid("reload");
+                        TT.closeCurrentWindow();
+                    }
+                });
 			},
 			clearForm : function(){
 				$('#contentAddForm').form('reset');
