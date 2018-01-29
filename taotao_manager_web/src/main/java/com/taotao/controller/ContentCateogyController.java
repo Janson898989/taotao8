@@ -35,4 +35,11 @@ public class ContentCateogyController {
     public TaotaoResult saveContentCategory(TbContentCategory contentCategory){
        return  contentCategoryService.saveContentCategory(contentCategory);
     }
+
+    //删除
+    @RequestMapping("/content/category/delete")
+    @ResponseBody
+    public TaotaoResult delete(Long id){
+        return contentCategoryService.deleteContentCateogy(id);
+    }
 }

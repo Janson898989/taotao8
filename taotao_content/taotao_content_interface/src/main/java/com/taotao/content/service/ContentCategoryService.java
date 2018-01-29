@@ -13,4 +13,6 @@ public interface ContentCategoryService {
     public List<TreeNode> getContentCategoryListByParentId(Long parentId);
     //添加内容分类数据
     public TaotaoResult saveContentCategory(TbContentCategory contentCategory);
+    //删除
+    public TaotaoResult deleteContentCateogy(Long id);
 }
