@@ -1,6 +1,7 @@
 package com.jedis.test;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import redis.clients.jedis.HostAndPort;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisCluster;

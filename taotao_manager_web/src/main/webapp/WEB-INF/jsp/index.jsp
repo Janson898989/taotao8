@@ -36,6 +36,13 @@
 	         		<li data-options="attributes:{'url':'content'}">内容管理</li>
 	         	</ul>
          	</li>
+
+			<li>
+				<span>索引管理</span>
+				<ul>
+					<li data-options="attributes:{'url':'indexManager'}">一键导入索引数据</li>
+				</ul>
+			</li>
          </ul>
     </div>
     <div data-options="region:'center',title:''">
