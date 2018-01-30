@@ -2,10 +2,12 @@ package com.taotao.search.test;
 
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServer;
+import org.apache.solr.client.solrj.impl.CloudSolrServer;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
+import org.apache.solr.common.SolrInputDocument;
 import org.junit.Test;
 
 import java.util.List;
@@ -55,6 +57,31 @@ public class TestSolrj {
             }
             System.out.println(result.get("item_price"));
         }
+
+    }
+
+
+
+    //测试集群
+
+    @Test
+    public void testSolrCloud() throws Exception{
+        //创建cloudsolrserver连接对象
+        CloudSolrServer solrServer = new CloudSolrServer("192.168.25.154:2181,192.168.25.154:2182,192.168.25.154:2183");
+        //第二个：设置默认的collection集合名字
+        solrServer.setDefaultCollection("collection2");
+
+        //3.添加文档
+        SolrInputDocument document = new SolrInputDocument();
+        document.addField("id","test01");
+        document.addField("item_title","solr集群的测试");
+
+        //4.添加到索引库
+        solrServer.add(document);
+
+        solrServer.commit();
+
+
 
     }
 }

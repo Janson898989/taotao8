@@ -14,4 +14,11 @@ public interface ItemService {
     public EasyUIDataGridResult getItemList(Integer page,Integer rows);
 
     public TaotaoResult saveItem(TbItem tbItem,String desc);
+
+    public TbItem getItemById(Long id);
+
+    public void deleteById(Long id);
+
+    //参数里面更新后的数据必须有id的值
+    public void updateById(TbItem item,String desc);
 }

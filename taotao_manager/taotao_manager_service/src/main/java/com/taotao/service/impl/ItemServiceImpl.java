@@ -64,4 +64,26 @@ public class ItemServiceImpl implements ItemService {
         tbItemDescMapper.insertSelective(itemDesc);
         return TaotaoResult.ok();
     }
+
+    @Override
+    public TbItem getItemById(Long id) {
+        TbItem tbItem = tbItemMapper.selectByPrimaryKey(id);
+        return tbItem;
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        tbItemMapper.deleteByPrimaryKey(id);
+        tbItemDescMapper.deleteByPrimaryKey(id);
+
+    }
+
+    @Override
+    public void updateById(TbItem item,String desc) {
+        tbItemMapper.updateByPrimaryKeySelective(item);
+        TbItemDesc desc1 = new TbItemDesc();
+        desc1.setItemDesc(desc);
+        desc1.setItemId(item.getId());
+        tbItemDescMapper.updateByPrimaryKeySelective(desc1);
+    }
 }

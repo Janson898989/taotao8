@@ -28,12 +28,13 @@ public class SearchController {
        if(StringUtils.isNotBlank(queryString)){
            queryString = new String(queryString.getBytes("iso-8859-1"),"utf-8");
        }
+       int i=9/0;
         SearchResult result = searchService.search(queryString, page, ROWS);
         //2.将数据传递到页面中
         model.addAttribute("query",queryString);
         model.addAttribute("totalPages",result.getPageCount());
         model.addAttribute("itemList",result.getItemList());
-       // model.addAttribute("page",result.getPage());//刚才的问题就是需要添加page页的回显。
+        model.addAttribute("page",result.getPage());//刚才的问题就是需要添加page页的回显。
         return "search";
     }
 }
