@@ -1,5 +1,6 @@
 package com.taotao.search.service;
 
+import com.taotao.common.pojo.SearchItem;
 import com.taotao.common.pojo.SearchResult;
 import com.taotao.common.pojo.TaotaoResult;
 
@@ -9,5 +10,11 @@ public interface SearchService {
 
     //根据表现层传递过来的查询的条件查询  分页的查询
     public SearchResult search(String queryString,Integer page,Integer rows) throws Exception;
+
+    /**
+     * 更新索引库
+     * @param searchItem
+     */
+    public void updateIndex(SearchItem searchItem) throws Exception;
 
 }

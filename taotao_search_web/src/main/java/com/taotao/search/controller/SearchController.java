@@ -28,7 +28,7 @@ public class SearchController {
        if(StringUtils.isNotBlank(queryString)){
            queryString = new String(queryString.getBytes("iso-8859-1"),"utf-8");
        }
-       int i=9/0;
+//       int i=9/0;
         SearchResult result = searchService.search(queryString, page, ROWS);
         //2.将数据传递到页面中
         model.addAttribute("query",queryString);

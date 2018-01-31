@@ -20,4 +20,23 @@
         and item.`status`=1
 
     </select>
+    <select id="getSearchItemById" resultType="com.taotao.common.pojo.SearchItem" parameterType="long">
+        SELECT
+            item.id,
+            item.title,
+            item.price,
+            item.sell_point,
+            item.image,
+            cat.`name` as category_name,
+            itemdesc.item_desc
+        FROM
+            tb_item AS item,
+            tb_item_cat AS cat,
+            tb_item_desc AS itemdesc
+        WHERE
+            item.id = itemdesc.item_id
+        AND item.cid = cat.id
+        and item.`status`=1
+        and item.id=#{id}
+    </select>
 </mapper>

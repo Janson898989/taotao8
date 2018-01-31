@@ -26,6 +26,7 @@ public class TbItem implements Serializable {
 
     private Date updated;
 
+
     private static final long serialVersionUID = 1L;
 
     public Long getId() {

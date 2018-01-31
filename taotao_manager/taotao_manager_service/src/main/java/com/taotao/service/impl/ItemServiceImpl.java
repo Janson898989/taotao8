@@ -11,8 +11,15 @@ import com.taotao.pojo.TbItem;
 import com.taotao.pojo.TbItemDesc;
 import com.taotao.service.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jms.core.JmsTemplate;
+import org.springframework.jms.core.MessageCreator;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
+import javax.jms.Destination;
+import javax.jms.JMSException;
+import javax.jms.Message;
+import javax.jms.Session;
 import java.util.Date;
 import java.util.List;
 
@@ -42,6 +49,13 @@ public class ItemServiceImpl implements ItemService {
         return result;
     }
 
+
+    @Autowired
+    private JmsTemplate jmsTemplate;
+
+    @Resource(name = "topicDestination")
+    private Destination destination;
+
     @Override
     public TaotaoResult saveItem(TbItem tbItem, String desc) {
         //注入mapper
@@ -62,6 +76,18 @@ public class ItemServiceImpl implements ItemService {
         itemDesc.setCreated(tbItem.getCreated());
         itemDesc.setUpdated(tbItem.getCreated());
         tbItemDescMapper.insertSelective(itemDesc);
+
+        //在添加商品的时候发送消息 ---》商品的id ---->消费者消费到商品的id  从数据库查询到罪行的数据更新到索引库中
+
+
+        jmsTemplate.send(destination, new MessageCreator() {
+            @Override
+            public Message createMessage(Session session) throws JMSException {
+                return session.createTextMessage(itemId+"");
+            }
+        });
+
+
         return TaotaoResult.ok();
     }
 
@@ -85,5 +111,10 @@ public class ItemServiceImpl implements ItemService {
         desc1.setItemDesc(desc);
         desc1.setItemId(item.getId());
         tbItemDescMapper.updateByPrimaryKeySelective(desc1);
+    }
+
+    @Override
+    public TbItemDesc getTbItemDesc(Long itemId) {
+        return tbItemDescMapper.selectByPrimaryKey(itemId);
     }
 }

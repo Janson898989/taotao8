@@ -99,4 +99,31 @@ public class SearchServiceImpl implements SearchService {
         search.setPageCount(pagecount);
         return search;
     }
+
+    @Override
+    public void updateIndex(SearchItem searchItem)  throws Exception{
+
+        //更新索引库
+        //创建solrserver的连接对象
+
+        //创建文档对象
+        SolrInputDocument document = new SolrInputDocument();
+
+        //添加域
+        document.addField("id",searchItem.getId().toString());
+        document.addField("item_title",searchItem.getTitle());
+        document.addField("item_sell_point",searchItem.getSell_point());
+        document.addField("item_price",searchItem.getPrice());
+        document.addField("item_image",searchItem.getImage());
+        document.addField("item_category_name",searchItem.getCategory_name());
+        document.addField("item_desc",searchItem.getItem_desc());
+
+        //添加到索引库
+        solrServer.add(document);
+
+        //提交
+        solrServer.commit();
+
+
+    }
 }

@@ -3,6 +3,7 @@ package com.taotao.service;
 import com.taotao.common.pojo.EasyUIDataGridResult;
 import com.taotao.common.pojo.TaotaoResult;
 import com.taotao.pojo.TbItem;
+import com.taotao.pojo.TbItemDesc;
 
 public interface ItemService {
     /**
@@ -21,4 +22,7 @@ public interface ItemService {
 
     //参数里面更新后的数据必须有id的值
     public void updateById(TbItem item,String desc);
+
+    //获取商品的描述信息
+    public TbItemDesc getTbItemDesc(Long itemId);
 }
